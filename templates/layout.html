@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>VideoPlayer{% block ext_title %}{% endblock %}</title>
+
+        <!-- Bootstrap -->
+        <link href="/static/css/bootstrap-4.3.1.min.css" rel="stylesheet">
+        <!-- DataTables -->
+        <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="/static/js/jquery-2.2.4.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="/static/js/bootstrap-3.3.7.min.js"></script>
+        <!-- Awesome sorted, searchable tables -->
+        <script src="/static/js/jquery.dataTables-1.10.19.min.js"></script>
+        <!-- Lazy loading of images / videos -->
+        <script src="/static/js/blazy-1.8.2.min.js"></script>
+    </head>
+
+<body>
+    <!-- Actual page content comes here -->
+    <div class="container" style="margin-top:20px; margin-bottom:300px;">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+    <div class="footer">
+    </div>
+
+    <!-- Additional page specific scripts -->
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+
+
+</html>

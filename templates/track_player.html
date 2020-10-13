@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+{% block ext_title %} - Track Player {% endblock %}
+
+{% block content %}
+<div class="col-md-12 text-center">
+    <h3>
+        Track Player<br />
+        <small>{{ clip }}</small>
+    </h3>
+</div>
+
+<div class="col-md-12">
+    <p>
+        Maximum number of detections per frame is {{ N }}.
+    </p>
+    <div id="videoContainer">
+        {% for n in range(N) %}
+        <div class="track_box" id="track_box{{ loop.index0 }}"></div>
+        {% endfor %}
+
+        <video id="player" width=480 controls>
+            <source src="/video/{{ clip }}/" type="video/mp4">
+        </video>
+        <br />
+        <button class="btn btn-primary" onclick="play();">Play</button>
+        <button class="btn btn-primary" onclick="pause();">Pause</button>
+        <span id="time_span">playback</span>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<link href="/static/css/facetracks.css" rel="stylesheet">
+
+<script type="text/javascript">
+// global definitions
+var tracks = '';
+var track_boxes = '';
+var vid = '';
+
+$(document).ready(function() {
+    // video player
+    vid = document.getElementById('player');
+    // tracks to JSON format
+    tracks = {{ tracks|tojson }};
+    // collect track boxes
+    track_boxes = [];
+    for (var i = 0; i < {{ N }}; i++) {
+        track_boxes.push(document.getElementById("track_box" + i));
+    }
+});
+
+function play() {
+    vid.play();
+}
+
+function pause() {
+    vid.pause();
+}
+
+function hide_boxes(track_boxes) {
+    for (var i = 0; i < {{ N }}; i++) {
+        document.getElementById("track_box" + i).style.visibility = "hidden";
+    }
+}
+
+// Get the face-track information for closest timestamp to current ts
+function get_closest_timestamp(ts) {
+    // Use binary search :)
+    var lo = -1, hi = tracks.length;
+    while (hi - lo > 1) {
+        var mid = Math.round((lo + hi)/2);
+        if (tracks[mid].ts <= ts) {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    // get closest
+    if (Math.abs(ts - tracks[lo].ts) < Math.abs(ts - tracks[hi].ts))
+        return tracks[lo];
+    else
+        return tracks[hi];
+}
+
+
+var vid = document.getElementById('player');
+$(vid).on('playing', function(event) {
+    timer = window.setInterval(function() {
+        // Get bboxes for this frame, timestamp
+        ft = get_closest_timestamp(vid.currentTime);
+        document.getElementById('time_span').textContent = 'playback: ' + vid.currentTime;
+        for (var i = 0; i < track_boxes.length; i++) {
+            if (ft.bbox.length <= i) {
+                track_boxes[i].style.visibility = "hidden";
+            }
+            else {
+                // Move the face boxes
+                track_boxes[i].style.visibility = "visible"
+                track_boxes[i].style.left = ft.bbox[i][0] + 'px';
+                track_boxes[i].style.top = ft.bbox[i][1] + 'px';
+                track_boxes[i].style.width = ft.bbox[i][2] + 'px';
+                track_boxes[i].style.height = ft.bbox[i][3] + 'px';
+                track_boxes[i].innerHTML = '<span class="track_highlight_id">' + ft.ftid[i] + '</span>';
+                // track_boxes[i].innerHTML += '<span class="track_highlight_name">' + ft.ftname[i] + '</span>';
+                // var w_id = $("#track_box" + i + " > span.track_highlight_id").width();
+                // $("#track_box" + i + " > span.track_highlight_id").css("left", -w_id);
+                // $("#track_box" + i + " > span.track_highlight_name").css("margin-top", track_boxes[i].style.height);
+                // var w1 = $("#track_box" + i).width();
+                // var w2 = $("#track_box" + i + " > span.track_highlight_name").width();
+                // $("#track_box" + i + " > span.track_highlight_name").css("left", -(w2-w1) / 2);
+            }
+        }
+    }, 40);
+}).on('pause', function(event) {
+    window.clearInterval(timer);
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+/* Face tracks CSS */
+
+
+div#videoContainer {
+    position: relative;
+}
+div.track_box {
+    width: 100px;
+    height: 100px;
+    border-color: white;
+    border-style: solid;
+    border-width: 4px;
+    position: absolute;
+    visibility: hidden;
+    left: 0px;
+    top: 0px;
+}
+span.track_highlight_id {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    font-size: 14pt;
+}
+span.track_highlight_name {
+    position: absolute;
+    top: 0;
+    background-color: rgba(170, 255, 170, 0.8);
+    color: black;
+    overflow-x: visible;
+    white-space: nowrap;
+    font-size: 14pt;
+}

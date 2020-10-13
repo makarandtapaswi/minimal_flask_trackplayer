@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block ext_title %} - Videos List{% endblock %}
+
+{% block content %}
+<div class="col-md-12 text-center">
+    <h3>
+        Videos List
+    </h3>
+</div>
+
+<div class="col-md-12">
+    <ul>
+        {% for vid in vids %}
+        <li><a href="/play_tracks/{{ vid }}/">{{ vid }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+

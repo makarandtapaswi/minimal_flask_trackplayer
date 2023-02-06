@@ -10,14 +10,12 @@ from flask import Flask, render_template, redirect, flash, request, url_for, mak
 # Create the main Flask application
 app = Flask(__name__)
 # openssl rand -base64 64
-app.secret_key = 'ZiLi+IsCirRXscoj/PcPkfjiu4dz181DWyrLjnSSxaypGmpM4qYtj48GXLC7SulGMzJyCtWNidApX6/mMQG6NA=='
+app.secret_key = 'KH3UmcjdhBWqTAwjmRfRVBvvE4cS5NjezSC10JAvkRM68gFQPy42Y2hKz5tp/xoEsYB8j+UN9ZbRgzLb2wCUGw=='
 # Reload when template file changes!
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-
-# DATA_ROOT = '/sequoia/data1/mtapaswi/data/fact2/'
-DATA_ROOT = '/sequoia/data1/mtapaswi/data/moviegraphs/mg_videos/tt1285016'
-TRACK_ROOT = '/sequoia/data1/mtapaswi/data/moviegraphs/ssd_head_tracks/tt1285016'
+DATA_ROOT = 'data'
+TRACK_ROOT = 'data'
 
 @app.route('/')
 def home():
@@ -69,11 +67,13 @@ def load_matidx(clip):
 
 @app.route('/play_tracks/<clip>/')
 def play_tracks(clip):
+    """Page to play track files
+    """
     # load framenumber - timestamp
     fn_ts = load_matidx(clip)
+
     # load tracks
     track_fname = os.path.join(TRACK_ROOT, os.path.splitext(clip)[0] + '.track')
-    # track_fname = os.path.join(DATA_ROOT, os.path.splitext(clip)[0] + '.ptrack')
     tracks = convert_track_to_web_json(track_fname, fn_ts)
 
     # max num-boxes per frame

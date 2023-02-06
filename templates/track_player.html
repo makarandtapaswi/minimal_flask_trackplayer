@@ -99,11 +99,13 @@ $(vid).on('playing', function(event) {
             else {
                 // Move the face boxes
                 track_boxes[i].style.visibility = "visible"
-                track_boxes[i].style.left = ft.bbox[i][0] + 'px';
-                track_boxes[i].style.top = ft.bbox[i][1] + 'px';
-                track_boxes[i].style.width = ft.bbox[i][2] + 'px';
-                track_boxes[i].style.height = ft.bbox[i][3] + 'px';
+                track_boxes[i].style.left = ft.bbox[i][0]/2 + 'px';
+                track_boxes[i].style.top = ft.bbox[i][1]/2 + 'px';
+                track_boxes[i].style.width = ft.bbox[i][2]/2 + 'px';
+                track_boxes[i].style.height = ft.bbox[i][3]/2 + 'px';
                 track_boxes[i].innerHTML = '<span class="track_highlight_id">' + ft.ftid[i] + '</span>';
+
+                // Use the code below if tracks have names
                 // track_boxes[i].innerHTML += '<span class="track_highlight_name">' + ft.ftname[i] + '</span>';
                 // var w_id = $("#track_box" + i + " > span.track_highlight_id").width();
                 // $("#track_box" + i + " > span.track_highlight_id").css("left", -w_id);
